@@ -1,0 +1,19 @@
+- name: test
+  hosts: localhost
+  tasks:
+    - name: debug
+      debug:
+        var: artg_skipped_projects
+    - name: debug
+      debug:
+        var: artg_change_list
+    - name: test intersection
+      set_fact:
+        non_ci_repo_found: true
+      when: item.project not in artg_skipped_projects
+      with_list: "{{ artg_change_list }}" 
+
+    - name: test
+      debug:
+        var: non_ci_repo_found
+
